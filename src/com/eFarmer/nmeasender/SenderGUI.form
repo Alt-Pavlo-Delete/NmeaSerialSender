@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.eFarmer.nmeasender.SenderGUI">
+  <grid id="27dc6" binding="MainFrame" layout-manager="GridLayoutManager" row-count="5" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="22" y="13" width="491" height="438"/>
+    </constraints>
+    <properties>
+      <focusable value="false"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <component id="61c1" class="javax.swing.JButton" binding="pauseButton" default-binding="true">
+        <constraints>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="88" height="30"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Pause"/>
+        </properties>
+      </component>
+      <component id="73eff" class="javax.swing.JButton" binding="startButton" default-binding="true">
+        <constraints>
+          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Start"/>
+        </properties>
+      </component>
+      <toolbar id="81639">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="-1" height="20"/>
+          </grid>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="11823" class="javax.swing.JComboBox" binding="COMPort">
+            <constraints/>
+            <properties>
+              <model/>
+            </properties>
+          </component>
+          <component id="548d0" class="javax.swing.JComboBox" binding="Baudrate">
+            <constraints/>
+            <properties/>
+          </component>
+          <component id="78242" class="javax.swing.JComboBox" binding="SetParity">
+            <constraints/>
+            <properties/>
+          </component>
+          <component id="7a705" class="javax.swing.JComboBox" binding="Frequency">
+            <constraints/>
+            <properties/>
+          </component>
+        </children>
+      </toolbar>
+      <component id="4801c" class="javax.swing.JTextField" binding="FilePathField">
+        <constraints>
+          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="31"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="358f0" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="88" height="31"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="File path:"/>
+        </properties>
+      </component>
+      <component id="6adec" class="javax.swing.JSeparator">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="2" vsize-policy="2" hsize-policy="6" anchor="2" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="2bef5" class="javax.swing.JTextArea" binding="textArea1" default-binding="true">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="50"/>
+          </grid>
+        </constraints>
+        <properties>
+          <editable value="false"/>
+          <lineWrap value="true"/>
+          <text value=""/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>

@@ -1,0 +1,5 @@
+NmeaPath= C:\\Users\\Cibermag\\Desktop\\test.nmea
+PortNumber=COM8
+BaudRate=115200
+DataParityStop=8N1
+MessageFrequency=10Hz
