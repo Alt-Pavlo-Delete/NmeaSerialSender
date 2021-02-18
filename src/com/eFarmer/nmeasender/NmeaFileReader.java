@@ -8,11 +8,11 @@ public class NmeaFileReader {
     public String LastLine;
     public byte[] ByteLine; //use if write to COM method requires byte array.
     private BufferedReader StringReader;
-    private GetSettings getSettings = new GetSettings();
+    private SettingsContainer SettingsContainer = new SettingsContainer();
 
     public NmeaFileReader() {
         try {
-            StringReader = new BufferedReader(new FileReader(getSettings.getNmeaPath()));
+            StringReader = new BufferedReader(new FileReader(SettingsContainer.getNmeaPath()));
         }
         catch (IOException ioEx) {
             ioEx.printStackTrace();

@@ -1,10 +1,17 @@
 package com.eFarmer.nmeasender;
 
+import java.io.File;
+
 public class FileToComPocessor {
 
     NmeaFileReader NmeaFileReader = new NmeaFileReader();
-    GetSettings GetSettings = new GetSettings();
-    ComPort comPort = new ComPort(GetSettings.getPortNumber(), GetSettings.getBaudRate(), GetSettings.getDataBits(), GetSettings.getStopBits(), GetSettings.getParity());
+    private SettingsContainer getSettingsContainer = new SettingsContainer();
+    ComPort comPort = new ComPort();
+
+    public FileToComPocessor() {
+        comPort.openComPort(getSettingsContainer.getPortNumber(), getSettingsContainer.getBaudRate(), getSettingsContainer.getDataBits(), getSettingsContainer.getStopBits(), getSettingsContainer.getParity());
+        ;
+    }
 
     public void RunByteSendCycle() throws InterruptedException {
         try {
@@ -14,7 +21,7 @@ public class FileToComPocessor {
                 System.out.println(NmeaFileReader.LastLine);
 
                 if (NmeaFileReader.LastLine.contains("GGA")) {
-                    Thread.sleep(1000 / GetSettings.getMessageFrequency());
+                    Thread.sleep(1000 / getSettingsContainer.getMessageFrequency());
                 }
             }
         } catch (NullPointerException nullEx){

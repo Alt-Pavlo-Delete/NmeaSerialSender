@@ -3,30 +3,15 @@ package com.eFarmer.nmeasender;
 import java.io.*;
 import java.util.Properties;
 
-public class GetSettings {
+public class SettingsContainer {
    private String NmeaPath;
    private String PortNumber;
    private String BaudRate;
    private String DataParityStop;
    private String MessageFrequency;
 
-   public GetSettings(){
-       try {
-           File SettingsFile = new File("Settings.txt");
-           FileReader SettingsReader = new FileReader(SettingsFile);
-           Properties Settings = new Properties();
-           Settings.load(SettingsReader);
-           NmeaPath = Settings.getProperty("NmeaPath");
-           PortNumber = Settings.getProperty("PortNumber");
-           BaudRate = Settings.getProperty("BaudRate");
-           DataParityStop = Settings.getProperty("DataParityStop");;
-           MessageFrequency = Settings.getProperty("MessageFrequency");
-           System.out.println(PortNumber + " " + BaudRate +" "+ DataParityStop + " "+  MessageFrequency);
-           SettingsReader.close();
-
-       } catch (IOException ioEx){
-           ioEx.printStackTrace();
-       }
+   public void setNmeaPath(String NmeaPath){
+       this.NmeaPath = NmeaPath;
    }
 
    public String getPortNumber() {

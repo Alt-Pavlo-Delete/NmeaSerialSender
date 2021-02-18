@@ -11,20 +11,15 @@ public class SenderGUI extends JFrame{
     private JButton pauseButton;
     private JButton startButton;
     private JTextField FilePathField;
-    private JComboBox COMPort;
-    private JComboBox Frequency;
-    private JComboBox Baudrate;
-    private JComboBox SetParity;
-    private JTextArea textArea1;
+    private JComboBox ComPortBox;
+    private JComboBox FrequencyBox;
+    private JComboBox BaudrateBox;
+    private JComboBox SetParityBox;
+    private JTextArea textArea;
+
+    private SettingsContainer SettingsContainer = new SettingsContainer();
 
     public boolean PauseState = false;
-    public String filePath;
-    public int PortNumber = 8;
-    public int BaudRate = 115200;
-    public int DataBits = 8;
-    public int StopBits = 1;
-    public int Parity = 0;
-    public int messageFrequency = 5; // 5, 10 Hz
 
     public SenderGUI() {
         frame.setTitle("Nmea to serial sender");
@@ -38,7 +33,7 @@ public class SenderGUI extends JFrame{
         FilePathField.setText("Enter path to NMEA log here");
         FilePathField.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-        filePath = FilePathField.getText();
+                SettingsContainer.setNmeaPath(FilePathField.getText());
             }
         });
 
@@ -60,6 +55,8 @@ public class SenderGUI extends JFrame{
 
             }
         });
+
+        ComPortBox = new JComboBox();
 
 
     }
