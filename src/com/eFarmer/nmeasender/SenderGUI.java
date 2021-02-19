@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 public class SenderGUI extends JFrame{
 
     private JFrame frame = new JFrame();
+    private SettingsContainer SettingsContainer = new SettingsContainer();
+    private ComPort ComPort = new ComPort();
     private JPanel MainFrame;
     private JButton pauseButton;
     private JButton startButton;
@@ -16,8 +18,6 @@ public class SenderGUI extends JFrame{
     private JComboBox BaudrateBox;
     private JComboBox SetParityBox;
     private JTextArea textArea;
-
-    private SettingsContainer SettingsContainer = new SettingsContainer();
 
     public boolean PauseState = false;
 
@@ -56,7 +56,7 @@ public class SenderGUI extends JFrame{
             }
         });
 
-        ComPortBox = new JComboBox();
+        ComPortBox = new JComboBox(ComPort.ComPortsAvailable);
 
 
     }

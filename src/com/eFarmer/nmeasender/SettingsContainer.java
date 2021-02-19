@@ -13,6 +13,10 @@ public class SettingsContainer {
    public void setNmeaPath(String NmeaPath){
        this.NmeaPath = NmeaPath;
    }
+   public void setPortNumber(String PortNumber) {this.PortNumber = PortNumber;}
+   public void setBaudRate(String BaudRate) {this.BaudRate = BaudRate;}
+   public void setDataParityStop(String DataParityStop) {this.DataParityStop = DataParityStop;}
+   public void setMessageFrequency(String MessageFrequency) {this.MessageFrequency = MessageFrequency;}
 
    public String getPortNumber() {
     if (PortNumber.contains("COM")){
