@@ -1,21 +1,20 @@
 package com.eFarmer.nmeasender;
 
 import java.io.File;
+import java.io.PipedOutputStream;
+import java.io.PrintStream;
 
 public class FileToComPocessor {
 
-    NmeaFileReader NmeaFileReader = new NmeaFileReader();
+    private NmeaFileReader NmeaFileReader = new NmeaFileReader();
     private SettingsContainer getSettingsContainer = new SettingsContainer();
-    ComPort comPort = new ComPort();
-
-    public FileToComPocessor() {
-        comPort.openComPort(getSettingsContainer.getPortNumber(), getSettingsContainer.getBaudRate(), getSettingsContainer.getDataBits(), getSettingsContainer.getStopBits(), getSettingsContainer.getParity());
-        ;
-    }
+    private ComPort comPort = new ComPort();
 
     public void RunByteSendCycle() throws InterruptedException {
+        comPort.openComPort(getSettingsContainer.getPortNumber(), getSettingsContainer.getBaudRate(), getSettingsContainer.getDataBits(), getSettingsContainer.getStopBits(), getSettingsContainer.getParity());
+
         try {
-            while (comPort != null) {
+            while (comPort != null && getSettingsContainer.getPausedStatus()==false) {
                 NmeaFileReader.GetDataLine();
                 comPort.WriteBytes(NmeaFileReader.ByteLine);
                 System.out.println(NmeaFileReader.LastLine);

@@ -1,23 +1,20 @@
 package com.eFarmer.nmeasender;
 
 import com.fazecast.jSerialComm.SerialPort;
+
 import java.util.ArrayList;
-
-import java.util.Arrays;
-
 
 public class ComPort {
 
     private SerialPort newPortInstance;
-    public String[] ComPortsAvailable;
 
-    public ComPort(){
-        SerialPort[] ComPorts = SerialPort.getCommPorts();
-        ArrayList<String> portNames = new ArrayList<>();
-        for (SerialPort port : ComPorts) {
-            portNames.add(port.getSystemPortName());
+    public ArrayList<String> getPortsList(){
+        SerialPort[] ComPortsAvailable = SerialPort.getCommPorts();
+        ArrayList<String> PortsList = new ArrayList<String>();
+        for (SerialPort Port : ComPortsAvailable){
+            PortsList.add(Port.getSystemPortName().concat(" ("+String.valueOf(Port)+")"));
         }
-        ComPortsAvailable = portNames.toArray(new String[] {});
+        return PortsList;
     }
 
     public void openComPort(String portNumber, int newBaudRate, int newDataBits, int newStopBits, int newParity){

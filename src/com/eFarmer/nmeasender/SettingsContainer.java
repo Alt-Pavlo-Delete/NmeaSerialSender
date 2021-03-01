@@ -1,14 +1,17 @@
 package com.eFarmer.nmeasender;
 
 import java.io.*;
-import java.util.Properties;
 
 public class SettingsContainer {
+    public String[] FreqList = {"1Hz", "5Hz", "10Hz"};
+    public String[] BaudList = {"1200","2400","4800","9600","19200","38400","57600","115200"};
+    public String[] ParityList = {"8N1","7N1","6N1","5N1","4N1","8N3","7N3","6N3"};
    private String NmeaPath;
    private String PortNumber;
    private String BaudRate;
    private String DataParityStop;
    private String MessageFrequency;
+   private Boolean PausedStatus = true;
 
    public void setNmeaPath(String NmeaPath){
        this.NmeaPath = NmeaPath;
@@ -17,6 +20,7 @@ public class SettingsContainer {
    public void setBaudRate(String BaudRate) {this.BaudRate = BaudRate;}
    public void setDataParityStop(String DataParityStop) {this.DataParityStop = DataParityStop;}
    public void setMessageFrequency(String MessageFrequency) {this.MessageFrequency = MessageFrequency;}
+   public void setPausedStatus(Boolean PausedStatus) {this.PausedStatus = PausedStatus;}
 
    public String getPortNumber() {
     if (PortNumber.contains("COM")){
@@ -53,10 +57,11 @@ public class SettingsContainer {
     }
 
     public int getMessageFrequency(){
-        if (MessageFrequency.length() != 0 && MessageFrequency.length() <= 4) {
-            return Integer.parseInt(MessageFrequency.substring(0, 2));
+        if (MessageFrequency.length() != 0 && MessageFrequency.contains("Hz")) {
+
+            return Integer.parseInt(MessageFrequency.substring(0, (MessageFrequency.indexOf("Hz"))));
         }
-        throw new RuntimeException("Invalid message frequency Hz. 1-100Hz is allowed.");
+        throw new RuntimeException("Invalid message frequency Hz. 1-10Hz is allowed.");
     }
 
     public String getNmeaPath() {
@@ -67,5 +72,9 @@ public class SettingsContainer {
             return NmeaPath;
         }
        throw new RuntimeException("Invalid NMEA file name .nmea or .txt is expected.");
+    }
+
+    public Boolean getPausedStatus(){
+     return PausedStatus;
     }
 }
