@@ -8,10 +8,11 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.io.PipedInputStream;
 
-public class GuiClass extends JFrame {
-    private SettingsContainer SettingsContainer = new SettingsContainer();
-    private FileToComPocessor FileToComProcessor;
+public class GuiClass {
+    private SettingsContainer SettingsContainer = com.eFarmer.nmeasender.SettingsContainer.getInstance();
+    private FileToComPocessor comProcessorThread = new FileToComPocessor();
     private PipedInputStream pipedInputStream = new PipedInputStream();
+    private String nmeaFilePath;
     private JFrame mainFrame;
     private JPanel mainPanel;
     private JToolBar mainBar;
@@ -22,15 +23,14 @@ public class GuiClass extends JFrame {
     private JTextField filePathField;
     private JTextArea mainTextArea;
     private JButton mainButton;
-    private ComPort ComPort;
-
+    private ComPort ComPort = new ComPort();
 
     public GuiClass() throws IOException {
 
-        ComPort = new ComPort();
         String[] PortList = ComPort.getPortsList().toArray(new String[0]);
         mainFrame = new JFrame();
         mainPanel = new JPanel();
+        mainFrame.setContentPane(mainPanel);
         mainBar = new JToolBar(JToolBar.HORIZONTAL);
         comPortBox = new JComboBox(PortList);
         frequencyBox = new JComboBox(SettingsContainer.FreqList);
@@ -44,7 +44,6 @@ public class GuiClass extends JFrame {
         mainFrame.setTitle("Nmea to serial sender");
         mainFrame.setSize(500, 600);
         mainFrame.setLayout(new BorderLayout());
-        mainFrame.setContentPane(mainPanel);
         mainFrame.setResizable(false);
         mainFrame.setVisible(true);
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -65,56 +64,25 @@ public class GuiClass extends JFrame {
         mainBar.add(frequencyBox);
         mainBar.setVisible(true);
 
-        comPortBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String FullPortName = String.valueOf(comPortBox.getSelectedItem());
-                SettingsContainer.setPortNumber(FullPortName.substring(0,4));
-            }
-        });
+        comPortBox.setSelectedIndex(0);
+        SettingsContainer.setPortNumber((String.valueOf(comPortBox.getSelectedItem()).substring(0,4)));
 
         parityBox.setSelectedIndex(0);
         SettingsContainer.setDataParityStop(SettingsContainer.ParityList[parityBox.getSelectedIndex()]);
-        parityBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SettingsContainer.setDataParityStop(SettingsContainer.ParityList[parityBox.getSelectedIndex()]);
-            }
-        });
 
         baudrateBox.setSelectedIndex(7);
         SettingsContainer.setBaudRate(SettingsContainer.BaudList[(baudrateBox.getSelectedIndex())]);
-        baudrateBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SettingsContainer.setBaudRate(SettingsContainer.BaudList[(baudrateBox.getSelectedIndex())]);
-            }
-        });
 
         frequencyBox.setSelectedIndex(2);
         SettingsContainer.setMessageFrequency(SettingsContainer.FreqList[frequencyBox.getSelectedIndex()]);
-        frequencyBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SettingsContainer.setMessageFrequency(SettingsContainer.FreqList[frequencyBox.getSelectedIndex()]);
-            }
-        });
 
+
+        // --------------- Text Field ---------------
         filePathField.setBounds(3,35,482,30);
         filePathField.setEditable(true);
         filePathField.setVisible(true);
         filePathField.setText("Enter path to NMEA log here");
-        filePathField.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                filePathField.setText("");
-            }
 
-            @Override
-            public void focusLost(FocusEvent e) {
-                SettingsContainer.setNmeaPath(filePathField.getText());
-            }
-        });
 
         // --------------- Text Area ---------------
         mainTextArea.setBounds(3, 70,480,450);
@@ -127,22 +95,67 @@ public class GuiClass extends JFrame {
         // --------------- Button ---------------
         mainButton.setBounds(3,525,480,35);
         mainButton.setVisible(true);
+
+
+        // --------------- LISTENERS ---------------
+        comPortBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String FullPortName = String.valueOf(comPortBox.getSelectedItem());
+                SettingsContainer.setPortNumber(FullPortName.substring(0,4));
+            }
+        });
+
+        parityBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SettingsContainer.setDataParityStop(SettingsContainer.ParityList[parityBox.getSelectedIndex()]);
+            }
+        });
+
+        baudrateBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SettingsContainer.setBaudRate(SettingsContainer.BaudList[(baudrateBox.getSelectedIndex())]);
+            }
+        });
+
+        frequencyBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SettingsContainer.setMessageFrequency(SettingsContainer.FreqList[frequencyBox.getSelectedIndex()]);
+            }
+        });
+
+        filePathField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                filePathField.setText("");
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                nmeaFilePath = filePathField.getText();
+            }
+        });
+
         mainButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                SettingsContainer.setNmeaPath(nmeaFilePath);
                 if (SettingsContainer.getPausedStatus()==false){
                     SettingsContainer.setPausedStatus(true);
                     mainButton.setText("SEND");
                 } else {
                     SettingsContainer.setPausedStatus(false);
                     mainButton.setText("PAUSE");
-                    FileToComProcessor = new FileToComPocessor();
 
-                    try {
-                        FileToComProcessor.RunByteSendCycle();
-                    } catch (InterruptedException interruptedException) {
-                        interruptedException.printStackTrace();
-                    }
+                    comProcessorThread.start();
+                    //Former RunSendByteCycle method of FileToComProcessor class.
+                    //1.Opens port.
+                    //2.Gets line via NmeaFileReader.
+                    //3.Writes bytes via ComPort Class.
+                    //4.Finalizing.
                 }
             }
         });

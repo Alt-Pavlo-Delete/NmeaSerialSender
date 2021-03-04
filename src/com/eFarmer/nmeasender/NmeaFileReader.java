@@ -8,7 +8,7 @@ public class NmeaFileReader {
     public String LastLine;
     public byte[] ByteLine; //use if write to COM method requires byte array.
     private BufferedReader StringReader;
-    private SettingsContainer SettingsContainer = new SettingsContainer();
+    private SettingsContainer SettingsContainer = com.eFarmer.nmeasender.SettingsContainer.getInstance();
 
     public NmeaFileReader() {
         try {

@@ -6,21 +6,35 @@ public class SettingsContainer {
     public String[] FreqList = {"1Hz", "5Hz", "10Hz"};
     public String[] BaudList = {"1200","2400","4800","9600","19200","38400","57600","115200"};
     public String[] ParityList = {"8N1","7N1","6N1","5N1","4N1","8N3","7N3","6N3"};
-   private String NmeaPath;
-   private String PortNumber;
-   private String BaudRate;
-   private String DataParityStop;
-   private String MessageFrequency;
-   private Boolean PausedStatus = true;
+   volatile private String nmeaPath;
+   volatile private String PortNumber;
+   volatile private String BaudRate;
+   volatile private String DataParityStop;
+   volatile private String MessageFrequency;
+   volatile private Boolean PausedStatus = true;
 
-   public void setNmeaPath(String NmeaPath){
-       this.NmeaPath = NmeaPath;
+   private static SettingsContainer instance;
+
+   public final static SettingsContainer getInstance(){
+       if (instance == null){
+           synchronized (SettingsContainer.class){
+               if (instance == null){
+                   instance = new SettingsContainer();
+               }
+           }
+       }
+       return instance;
    }
-   public void setPortNumber(String PortNumber) {this.PortNumber = PortNumber;}
-   public void setBaudRate(String BaudRate) {this.BaudRate = BaudRate;}
-   public void setDataParityStop(String DataParityStop) {this.DataParityStop = DataParityStop;}
-   public void setMessageFrequency(String MessageFrequency) {this.MessageFrequency = MessageFrequency;}
-   public void setPausedStatus(Boolean PausedStatus) {this.PausedStatus = PausedStatus;}
+
+   private SettingsContainer(){   }
+
+   synchronized public void setNmeaPath(String nmeaPath){this.nmeaPath = nmeaPath;
+    }
+   synchronized public void setPortNumber(String PortNumber) {this.PortNumber = PortNumber;}
+   synchronized public void setBaudRate(String BaudRate) {this.BaudRate = BaudRate;}
+   synchronized public void setDataParityStop(String DataParityStop) {this.DataParityStop = DataParityStop;}
+   synchronized public void setMessageFrequency(String MessageFrequency) {this.MessageFrequency = MessageFrequency;}
+   synchronized public void setPausedStatus(Boolean PausedStatus) {this.PausedStatus = PausedStatus;}
 
    public String getPortNumber() {
     if (PortNumber.contains("COM")){
@@ -65,13 +79,10 @@ public class SettingsContainer {
     }
 
     public String getNmeaPath() {
-       if (NmeaPath.contains(".nmea")){
-           return NmeaPath;
+       if (nmeaPath.contains(".txt")||nmeaPath.contains(".nmea")) {
+           return nmeaPath;
        }
-       if (NmeaPath.contains(".txt")){
-            return NmeaPath;
-        }
-       throw new RuntimeException("Invalid NMEA file name .nmea or .txt is expected.");
+       throw new RuntimeException("Nmea file path should contain .txt or .nmea ");
     }
 
     public Boolean getPausedStatus(){
