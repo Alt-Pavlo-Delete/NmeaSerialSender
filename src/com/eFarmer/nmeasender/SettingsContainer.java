@@ -40,13 +40,15 @@ public class SettingsContainer {
     if (PortNumber.contains("COM")){
         return PortNumber;
         }
-    throw new RuntimeException("Invalid COM settings. COM* is expected.");
+    System.out.println("!!!! Invalid COM name. COM* is expected. !!!!");
+    throw new RuntimeException("Invalid COM name. COM* is expected.");
     }
 
     public int getBaudRate() {
        if (BaudRate.contains("1200") || BaudRate.contains("2400") || BaudRate.contains("4800") || BaudRate.contains("9600") || BaudRate.contains("19200") || BaudRate.contains("38400") || BaudRate.contains("57600") || BaudRate.contains("115200")) {
            return Integer.parseInt(BaudRate);
        }
+       System.out.println("!!!! Invalid baud rate settings. 1200,2400,4800,9600,19200,38400,57600,115200 allowed. !!!!");
     throw new RuntimeException("Invalid baud rate settings. 1200,2400,4800,9600,19200,38400,57600,115200 allowed.");
     }
 
@@ -62,6 +64,7 @@ public class SettingsContainer {
         } else if (DataParityStop.contains("E")|| DataParityStop.contains("e")){
            return 2; // EVEN_PARITY
        } else {
+           System.out.println("!!!! Invalid parity. Only N(no), O(Odd), E(Even) are allowed. !!!!");
            throw new RuntimeException("Invalid parity. Only N(no), O(Odd), E(Even) are allowed.");
        }
     }
@@ -75,6 +78,7 @@ public class SettingsContainer {
 
             return Integer.parseInt(MessageFrequency.substring(0, (MessageFrequency.indexOf("Hz"))));
         }
+        System.out.println("!!!! Invalid message frequency Hz. 1-10Hz is allowed. !!!!");
         throw new RuntimeException("Invalid message frequency Hz. 1-10Hz is allowed.");
     }
 
@@ -82,6 +86,7 @@ public class SettingsContainer {
        if (nmeaPath.contains(".txt")||nmeaPath.contains(".nmea")) {
            return nmeaPath;
        }
+       System.out.println("!!!! Nmea file path should contain .txt or .nmea !!!!");
        throw new RuntimeException("Nmea file path should contain .txt or .nmea ");
     }
 

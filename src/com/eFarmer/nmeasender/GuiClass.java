@@ -3,15 +3,15 @@ package com.eFarmer.nmeasender;
 import com.sun.tools.jconsole.JConsolePlugin;
 
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
-import java.io.PipedInputStream;
+import java.io.*;
 
 public class GuiClass {
     private SettingsContainer SettingsContainer = com.eFarmer.nmeasender.SettingsContainer.getInstance();
     private FileToComPocessor comProcessorThread = new FileToComPocessor();
-    private PipedInputStream pipedInputStream = new PipedInputStream();
+    private PrintStream outStream;
     private final JFrame mainFrame;
     private final JPanel mainPanel;
     private final JToolBar mainBar;
@@ -25,7 +25,6 @@ public class GuiClass {
     private ComPort ComPort = new ComPort();
 
     public GuiClass() throws IOException {
-
         String[] PortList = ComPort.getPortsList().toArray(new String[0]);
         mainFrame = new JFrame();
         mainPanel = new JPanel();
@@ -87,9 +86,22 @@ public class GuiClass {
         mainTextArea.setBounds(3, 70,480,450);
         mainTextArea.setEditable(false);
         mainTextArea.setVisible(true);
-        mainTextArea.setLineWrap(false);
+        mainTextArea.setLineWrap(true);
         mainTextArea.setColumns(1);
         mainTextArea.setBackground(Color.lightGray);
+
+        // --------------- Stream to TextArea ---------------
+        outStream = new PrintStream(new OutputStream() {
+
+            @Override
+            public void write(int b) throws IOException {
+                if (mainTextArea.getLineCount() >= 25){mainTextArea.setText(null);}
+                mainTextArea.setText(mainTextArea.getText() + String.valueOf((char)b));
+            }
+        });
+        System.setOut(outStream);
+        //System.setErr(outStream); ENABLE TO REDIRECT ERROR MESSAGES TO MAIN TEXT AREA OF GUI
+
 
         // --------------- Button ---------------
         mainButton.setBounds(3,525,480,35);
@@ -147,6 +159,7 @@ public class GuiClass {
                 if (SettingsContainer.getPausedStatus()==false){
                     SettingsContainer.setPausedStatus(true);
                     mainButton.setText("SEND");
+                    System.out.println("--------------- PAUSED ---------------");
                 } else {
                     SettingsContainer.setPausedStatus(false);
                     mainButton.setText("PAUSE");

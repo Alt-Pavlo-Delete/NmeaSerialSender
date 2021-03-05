@@ -25,6 +25,7 @@ public class ComPort {
                 newPortInstance.setComPortParameters(newBaudRate, newDataBits, newStopBits, newParity);
 
                 if (newPortInstance.isOpen() == false) {
+                    System.out.println("!!!! COM port opening is FAILED !!!!");
                     throw new RuntimeException("COM port opening is FAILED");
                 }
             } catch (Exception ex) {
