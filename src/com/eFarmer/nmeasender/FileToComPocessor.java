@@ -17,7 +17,10 @@ public class FileToComPocessor implements Runnable {
 
     @Override
     public void run() {
-                NmeaFileReader = new NmeaFileReader();
+                if (NmeaFileReader == null){
+                   NmeaFileReader = new NmeaFileReader();
+                }
+
                 comPort.openComPort(getSettingsContainer.getPortNumber(), getSettingsContainer.getBaudRate(), getSettingsContainer.getDataBits(), getSettingsContainer.getStopBits(), getSettingsContainer.getParity());
 
                 while (comPort != null && getSettingsContainer.getPausedStatus() == false) {

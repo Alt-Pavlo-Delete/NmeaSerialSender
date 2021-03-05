@@ -1,7 +1,6 @@
 package com.eFarmer.nmeasender;
 
 import com.fazecast.jSerialComm.SerialPort;
-
 import java.util.ArrayList;
 
 public class ComPort {
@@ -17,17 +16,20 @@ public class ComPort {
         return PortsList;
     }
 
-    public void openComPort(String portNumber, int newBaudRate, int newDataBits, int newStopBits, int newParity){
-        newPortInstance = SerialPort.getCommPort(portNumber);
-        try {
-            newPortInstance.openPort();
-            newPortInstance.setComPortParameters(newBaudRate, newDataBits, newStopBits, newParity);
-            if (newPortInstance.isOpen() == false){
-                throw new RuntimeException("COM port opening is FAILED");
-            }
-        } catch (RuntimeException ex) {
-            throw new RuntimeException("COM port opening is FAILED");
+    public void openComPort(String portNumber, int newBaudRate, int newDataBits, int newStopBits, int newParity) {
+        if (newPortInstance == null) {
+            newPortInstance = SerialPort.getCommPort(portNumber);
         }
+            try {
+                newPortInstance.openPort();
+                newPortInstance.setComPortParameters(newBaudRate, newDataBits, newStopBits, newParity);
+
+                if (newPortInstance.isOpen() == false) {
+                    throw new RuntimeException("COM port opening is FAILED");
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
     }
 
     public void WriteBytes(byte[] bytes){

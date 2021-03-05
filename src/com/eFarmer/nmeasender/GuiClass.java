@@ -12,17 +12,16 @@ public class GuiClass {
     private SettingsContainer SettingsContainer = com.eFarmer.nmeasender.SettingsContainer.getInstance();
     private FileToComPocessor comProcessorThread = new FileToComPocessor();
     private PipedInputStream pipedInputStream = new PipedInputStream();
-    private String nmeaFilePath;
-    private JFrame mainFrame;
-    private JPanel mainPanel;
-    private JToolBar mainBar;
-    private JComboBox comPortBox;
-    private JComboBox frequencyBox;
-    private JComboBox baudrateBox;
-    private JComboBox parityBox;
-    private JTextField filePathField;
-    private JTextArea mainTextArea;
-    private JButton mainButton;
+    private final JFrame mainFrame;
+    private final JPanel mainPanel;
+    private final JToolBar mainBar;
+    private final JComboBox comPortBox;
+    private final JComboBox frequencyBox;
+    private final JComboBox baudrateBox;
+    private final JComboBox parityBox;
+    private final JTextField filePathField;
+    private final JTextArea mainTextArea;
+    private final JButton mainButton;
     private ComPort ComPort = new ComPort();
 
     public GuiClass() throws IOException {
@@ -130,19 +129,21 @@ public class GuiClass {
         filePathField.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                filePathField.setText("");
+                if (filePathField.getText().equals("Enter path to NMEA log here")){
+                    filePathField.setText("");
+                }
             }
 
             @Override
             public void focusLost(FocusEvent e) {
-                nmeaFilePath = filePathField.getText();
+                SettingsContainer.setNmeaPath(filePathField.getText());
             }
         });
 
         mainButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                SettingsContainer.setNmeaPath(nmeaFilePath);
+                SettingsContainer.setNmeaPath(filePathField.getText());
                 if (SettingsContainer.getPausedStatus()==false){
                     SettingsContainer.setPausedStatus(true);
                     mainButton.setText("SEND");
@@ -151,15 +152,16 @@ public class GuiClass {
                     mainButton.setText("PAUSE");
 
                     comProcessorThread.start();
-                    //Former RunSendByteCycle method of FileToComProcessor class.
-                    //1.Opens port.
-                    //2.Gets line via NmeaFileReader.
-                    //3.Writes bytes via ComPort Class.
-                    //4.Finalizing.
+                    /*
+                    Former RunSendByteCycle method of FileToComProcessor class.
+                    1.Opens port.
+                    2.Gets line via NmeaFileReader.
+                    3.Writes bytes via ComPort Class.
+                    4.Finalizing.
+                    */
                 }
             }
         });
-
 
     }
 }
