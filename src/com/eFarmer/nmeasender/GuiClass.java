@@ -155,6 +155,12 @@ public class GuiClass {
         mainButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                comPortBox.setEnabled(false);
+                frequencyBox.setEnabled(false);
+                parityBox.setEnabled(false);
+                baudrateBox.setEnabled(false);
+                filePathField.setEditable(false);
+
                 SettingsContainer.setNmeaPath(filePathField.getText());
                 if (SettingsContainer.getPausedStatus()==false){
                     SettingsContainer.setPausedStatus(true);
