@@ -1,4 +1,0 @@
-Manifest-Version: 1.0
-Main-Class: com.eFarmer.nmeasender.Main
-Class-Path: jSerialComm-2.6.2.jar Settings.txt
-
