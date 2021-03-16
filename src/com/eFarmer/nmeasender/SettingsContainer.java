@@ -26,15 +26,33 @@ public class SettingsContainer {
        return instance;
    }
 
-   private SettingsContainer(){   }
+   private SettingsContainer(){ }
 
-   synchronized public void setNmeaPath(String nmeaPath){this.nmeaPath = nmeaPath;
+   synchronized public void setNmeaPath(String nmeaPath){
+       this.nmeaPath = nmeaPath;
+       System.out.println("File selected: " +nmeaPath);
     }
-   synchronized public void setPortNumber(String PortNumber) {this.PortNumber = PortNumber;}
-   synchronized public void setBaudRate(String BaudRate) {this.BaudRate = BaudRate;}
-   synchronized public void setDataParityStop(String DataParityStop) {this.DataParityStop = DataParityStop;}
-   synchronized public void setMessageFrequency(String MessageFrequency) {this.MessageFrequency = MessageFrequency;}
-   synchronized public void setPausedStatus(Boolean PausedStatus) {this.PausedStatus = PausedStatus;}
+   synchronized public void setPortNumber(String PortNumber) {
+       this.PortNumber = PortNumber;
+       System.out.println("COM port set: "+PortNumber);
+   }
+   synchronized public void setBaudRate(String BaudRate) {
+       this.BaudRate = BaudRate;
+       System.out.println("Baud rate set: "+BaudRate);
+   }
+   synchronized public void setDataParityStop(String DataParityStop) {
+       this.DataParityStop = DataParityStop;
+       System.out.println("Data bits set: "+DataParityStop.substring(0,1));
+       System.out.println("Parity set: "+DataParityStop.substring(1,2));
+       System.out.println("Stop bits set: "+DataParityStop.substring(2,3));
+   }
+   synchronized public void setMessageFrequency(String MessageFrequency) {
+       this.MessageFrequency = MessageFrequency;
+       System.out.println("Message frequency set: "+MessageFrequency);
+   }
+   synchronized public void setPausedStatus(Boolean PausedStatus) {
+       this.PausedStatus = PausedStatus;
+   }
 
    public String getPortNumber() {
     if (PortNumber.contains("COM")){
@@ -75,7 +93,6 @@ public class SettingsContainer {
 
     public int getMessageFrequency(){
         if (MessageFrequency.length() != 0 && MessageFrequency.contains("Hz")) {
-
             return Integer.parseInt(MessageFrequency.substring(0, (MessageFrequency.indexOf("Hz"))));
         }
         System.out.println("!!!! Invalid message frequency Hz. 1-10Hz is allowed. !!!!");

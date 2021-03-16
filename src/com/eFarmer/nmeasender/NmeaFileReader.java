@@ -27,6 +27,7 @@ public class NmeaFileReader {
         }
         catch (IOException ioEx) {
             ioEx.printStackTrace();
+
         }
         return LastLine;
     }

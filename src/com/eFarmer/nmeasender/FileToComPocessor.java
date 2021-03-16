@@ -27,9 +27,11 @@ public class FileToComPocessor implements Runnable {
                         NmeaFileReader.GetDataLine();
                         comPort.WriteBytes(NmeaFileReader.ByteLine);
 
-                        if (NmeaFileReader.LastLine == null) {
-                            System.out.println("---- EMPTY line in NMEA file ----");
-                            FinallizeSendCycle();
+                        if (NmeaFileReader.LastLine.contains("null")) {
+                            System.out.println("---- Reached the END of the NMEA file ----");
+                            CloseComPort();
+                            CloseNmeaReader();
+                            break;
                         }
 
                         System.out.println(NmeaFileReader.LastLine);
@@ -44,9 +46,11 @@ public class FileToComPocessor implements Runnable {
                 }
             }
 
-    public void FinallizeSendCycle () {
-        System.out.println("Closing PORTS");
+    public void CloseComPort() {
         comPort.ClosePort();
+    }
+
+    public void CloseNmeaReader() {
         NmeaFileReader.CloseReader();
     }
 
