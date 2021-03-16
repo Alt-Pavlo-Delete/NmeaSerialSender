@@ -3,7 +3,7 @@ package com.eFarmer.nmeasender;
 import java.io.*;
 
 public class SettingsContainer {
-    public String[] FreqList = {"1Hz", "5Hz", "10Hz"};
+    public String[] FreqList = {"1Hz", "5Hz", "10Hz", "15Hz", "20Hz"};
     public String[] BaudList = {"1200","2400","4800","9600","19200","38400","57600","115200"};
     public String[] ParityList = {"8N1","7N1","6N1","5N1","4N1","8N3","7N3","6N3"};
    volatile private String nmeaPath;
