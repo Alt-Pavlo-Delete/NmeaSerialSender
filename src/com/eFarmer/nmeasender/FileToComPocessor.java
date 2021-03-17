@@ -1,34 +1,31 @@
 package com.eFarmer.nmeasender;
 
-import java.io.File;
-import java.io.PipedOutputStream;
-import java.io.PrintStream;
-
 public class FileToComPocessor implements Runnable {
-    private Thread processorThread;
     private NmeaFileReader NmeaFileReader;
-    private SettingsContainer getSettingsContainer = com.eFarmer.nmeasender.SettingsContainer.getInstance();
+    private final SettingsContainer getSettingsContainer = com.eFarmer.nmeasender.SettingsContainer.getInstance();
     private ComPort comPort = new ComPort();
 
     public void start(){
-        processorThread = new Thread(this::run);
+        Thread processorThread = new Thread(this::run);
         processorThread.start();
     }
 
     @Override
     public void run() {
+
                 if (NmeaFileReader == null){
                    NmeaFileReader = new NmeaFileReader();
                 }
 
                 comPort.openComPort(getSettingsContainer.getPortNumber(), getSettingsContainer.getBaudRate(), getSettingsContainer.getDataBits(), getSettingsContainer.getStopBits(), getSettingsContainer.getParity());
 
-                while (comPort != null && getSettingsContainer.getPausedStatus() == false) {
+                while (comPort != null && !getSettingsContainer.getPausedStatus()) {
                         NmeaFileReader.GetDataLine();
                         comPort.WriteBytes(NmeaFileReader.ByteLine);
 
                         if (NmeaFileReader.LastLine.contains("null")) {
                             System.out.println("---- Reached the END of the NMEA file ----");
+                            GuiClass.getInstance().endOfTransmission();
                             CloseComPort();
                             CloseNmeaReader();
                             break;
@@ -51,7 +48,9 @@ public class FileToComPocessor implements Runnable {
     }
 
     public void CloseNmeaReader() {
-        NmeaFileReader.CloseReader();
+        if (NmeaFileReader !=null) {
+            NmeaFileReader.CloseReader();
+            NmeaFileReader = null;
+        }
     }
-
 }

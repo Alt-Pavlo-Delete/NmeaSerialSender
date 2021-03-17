@@ -6,8 +6,8 @@ import java.awt.event.*;
 import java.io.*;
 
 public class GuiClass {
-    private SettingsContainer SettingsContainer = com.eFarmer.nmeasender.SettingsContainer.getInstance();
-    private FileToComPocessor comProcessorThread = new FileToComPocessor();
+    private final SettingsContainer SettingsContainer = com.eFarmer.nmeasender.SettingsContainer.getInstance();
+    private final FileToComPocessor comProcessorThread = new FileToComPocessor();
     private PrintStream outStream;
     private final JFrame mainFrame;
     private final JPanel mainPanel;
@@ -22,6 +22,22 @@ public class GuiClass {
     private final JTextArea mainTextArea;
     private final JButton mainButton;
     private ComPort ComPort = new ComPort();
+    private static GuiClass instance;
+
+    public final static GuiClass getInstance(){
+        if (instance == null){
+            synchronized (GuiClass.class){
+                if (instance == null){
+                    try {
+                        instance = new GuiClass();
+                    }catch (IOException ex){
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        }
+        return instance;
+    }
 
     public GuiClass() throws IOException {
         String[] PortList = ComPort.getPortsList().toArray(new String[0]);
@@ -162,6 +178,7 @@ public class GuiClass {
         cooseFile.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                comProcessorThread.CloseNmeaReader(); //If user changing file in PAUSE state -> close Buffered reader if its available;
                 fileChooser.showOpenDialog(fileChooser);
                 if (fileChooser.getSelectedFile() != null) {
                     filePathField.setText(fileChooser.getSelectedFile().getAbsolutePath());
@@ -178,12 +195,22 @@ public class GuiClass {
                 if (!SettingsContainer.getPausedStatus()){
                     SettingsContainer.setPausedStatus(true);
                     comProcessorThread.CloseComPort();
+                    cooseFile.setEnabled(true);
+                    comPortBox.setEnabled(true);
+                    baudrateBox.setEnabled(true);
+                    parityBox.setEnabled(true);
+                    frequencyBox.setEnabled(true);
+                    cooseFile.setEnabled(true);
                     mainButton.setText("SEND");
                     System.out.println("--------------- PAUSED ---------------");
 
                 } else {
                     SettingsContainer.setPausedStatus(false);
                     cooseFile.setEnabled(false);
+                    comPortBox.setEnabled(false);
+                    baudrateBox.setEnabled(false);
+                    parityBox.setEnabled(false);
+                    frequencyBox.setEnabled(false);
                     mainButton.setText("PAUSE");
 
                     comProcessorThread.start();
@@ -197,5 +224,17 @@ public class GuiClass {
                 }
             }
         });
+    }
+
+    //Called by FileToComProcessor if end of nmea file is detected.
+    public void endOfTransmission(){
+        SettingsContainer.setPausedStatus(true);
+        cooseFile.setEnabled(true);
+        comPortBox.setEnabled(true);
+        baudrateBox.setEnabled(true);
+        parityBox.setEnabled(true);
+        frequencyBox.setEnabled(true);
+        cooseFile.setEnabled(true);
+        mainButton.setText("SEND");
     }
 }
