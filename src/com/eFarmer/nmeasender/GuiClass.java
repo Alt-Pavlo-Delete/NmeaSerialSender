@@ -1,5 +1,11 @@
 package com.eFarmer.nmeasender;
 
+/* This class works with JSwing GUI.
+ * 1. Reads/writes settings from SettingsContainer singleton.
+ * 2. Inint's GUI components.
+ * 3. Implements anonymous action listeners.
+ */
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -7,7 +13,7 @@ import java.io.*;
 
 public class GuiClass {
     private final SettingsContainer SettingsContainer = com.eFarmer.nmeasender.SettingsContainer.getInstance();
-    private final FileToComPocessor comProcessorThread = new FileToComPocessor();
+    private final FileToComPocessor comProcessorThread = new FileToComPocessor(this);
     private PrintStream outStream;
     private final JFrame mainFrame;
     private final JPanel mainPanel;
@@ -22,22 +28,6 @@ public class GuiClass {
     private final JTextArea mainTextArea;
     private final JButton mainButton;
     private ComPort ComPort = new ComPort();
-    private static GuiClass instance;
-
-    public final static GuiClass getInstance(){
-        if (instance == null){
-            synchronized (GuiClass.class){
-                if (instance == null){
-                    try {
-                        instance = new GuiClass();
-                    }catch (IOException ex){
-                        ex.printStackTrace();
-                    }
-                }
-            }
-        }
-        return instance;
-    }
 
     public GuiClass() throws IOException {
         String[] PortList = ComPort.getPortsList().toArray(new String[0]);
@@ -55,6 +45,7 @@ public class GuiClass {
         fileChooser = new JFileChooser();
         mainTextArea = new JTextArea();
         mainButton = new JButton("SEND");
+
 
         // --------------- Main Frame ---------------
         mainFrame.setTitle("Nmea to serial sender");
@@ -137,7 +128,7 @@ public class GuiClass {
             }
         });
         System.setOut(outStream);
-        //System.setErr(outStream); ENABLE TO REDIRECT ERROR MESSAGES TO MAIN TEXT AREA OF GUI
+        //System.setErr(outStream); //ENABLE TO REDIRECT ERROR MESSAGES TO MAIN TEXT AREA OF GUI
 
 
         // --------------- Button ---------------

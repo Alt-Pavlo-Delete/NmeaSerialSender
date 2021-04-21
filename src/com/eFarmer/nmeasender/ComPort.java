@@ -1,5 +1,11 @@
 package com.eFarmer.nmeasender;
 
+/* This class is used to work with COM port JSerialComm lib.
+ * 1.Opens new COM port instance
+ * 2.Writes bytes to COM.
+ * 3.Close COM port on finnalize.
+ */
+
 import com.fazecast.jSerialComm.SerialPort;
 import java.util.ArrayList;
 
@@ -18,7 +24,7 @@ public class ComPort {
 
     public void openComPort(String portNumber, int newBaudRate, int newDataBits, int newStopBits, int newParity) {
         if (newPortInstance == null) {
-            newPortInstance = SerialPort.getCommPort(portNumber);
+            newPortInstance = SerialPort.getCommPort(portNumber); // Checks if port was already opened but method called twice.
         }
             try {
                 newPortInstance.openPort();

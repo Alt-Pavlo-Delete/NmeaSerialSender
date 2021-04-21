@@ -1,5 +1,9 @@
 package com.eFarmer.nmeasender;
 
+/* This singleton class contains settings
+ * Contains pause state from GUI.
+ */
+
 import java.io.*;
 
 public class SettingsContainer {
@@ -100,11 +104,11 @@ public class SettingsContainer {
     }
 
     public String getNmeaPath() {
-       if (nmeaPath.contains(".txt")||nmeaPath.contains(".nmea")) {
+       if (nmeaPath != null) {
            return nmeaPath;
        }
-       System.out.println("!!!! Nmea file path should contain .txt or .nmea !!!!");
-       throw new RuntimeException("Nmea file path should contain .txt or .nmea ");
+       System.out.println("!!!! NULL nmea file path. Enter NMEA file path. !!!!");
+       throw new RuntimeException("NULL nmea file path");
     }
 
     public Boolean getPausedStatus(){

@@ -8,5 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="jSerialComm-2.6.2" level="project" />
+    <orderEntry type="library" name="com.github.mcpat.gcf:gcf-bt-bluecove:0.6" level="project" />
   </component>
 </module>

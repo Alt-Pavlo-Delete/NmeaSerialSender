@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="com.github.mcpat.gcf:gcf-bt-bluecove:0.6" type="repository">
+    <properties maven-id="com.github.mcpat.gcf:gcf-bt-bluecove:0.6" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/gcf-bt-bluecove-0.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/gcf-standard-0.6.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
