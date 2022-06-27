@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="SerialSender:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/SerialSender_jar</output-path>
+    <root id="archive" name="SerialSender.jar">
+      <element id="module-output" name="SerialSender" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/src/com/eFarmer/nmeasender/jSerialComm-2.6.2.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

@@ -1,13 +1,11 @@
 package com.eFarmer.nmeasender;
 
 
+import java.io.IOException;
+
 public class Main {
 
-    public static void main(String[] args) throws InterruptedException{
-
-        FileToComPocessor FileToComPocessor = new FileToComPocessor();
-        FileToComPocessor.RunByteSendCycle();
-        FileToComPocessor.FinallizeSendCycle();
-
+    public static void main(String[] args) throws InterruptedException, IOException {
+        GuiClass myGuiClass = new GuiClass();
     }
 }
