@@ -1,6 +1,6 @@
 package com.eFarmer.nmeasender;
 
-/* This RUNNABLE class implements interaction of ComPort and NmeaFileReader classes.
+/* This class implements interaction of ComPort and NmeaFileReader classes.
  */
 
 public class FileToComPocessor implements Runnable {
