@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="SerialSender:jar">
+  <artifact type="jar" build-on-make="true" name="SerialSender:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/SerialSender_jar</output-path>
     <root id="archive" name="SerialSender.jar">
       <element id="module-output" name="SerialSender" />
